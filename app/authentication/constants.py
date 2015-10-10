@@ -7,8 +7,8 @@
 #y para quitar un permiso es solo restar el numero que representa cada permiso,
 #por ejemplo le retiro el permiso de poder comentar, es restar 7-2 y dara 5 que en
 #binario es 101, con esta manera se puede aumentar mas permisos por si el sistema
-#crece, poniendo un nuevo permiso por ejemplo: edicion que representarıa a 8
-#como el 4° bit.
+#crece, poniendo un nuevo permiso por ejemplo: edicion que representaria a 8
+#como el 4 bit.
 ReadRole    = 1
 CommentRole = 1<<1
 WriteRole   = 1<<2
