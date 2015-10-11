@@ -50,6 +50,8 @@ def signup():
              form.password.data,ReadRole+CommentRole+WriteRole,1)
             db.session.add(new_user)
             db.session.commit()
+            session['user_id'] = new_user.id
+            session['token'] = new_user.generate_token()
             session['email'] = new_user.email
         return redirect(url_for('auth.profile'))
         
