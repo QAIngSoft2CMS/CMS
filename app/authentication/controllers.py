@@ -61,22 +61,17 @@ def signup():
 @mod_auth.route('/signin/', methods=['GET', 'POST'])
 def signin():
 
+    form = LoginForm(request.form)
+
     if 'token' in session:
         user = User.verify_token(session['token'])
         if user:
             return redirect(url_for('auth.profile'))
-    form = LoginForm(request.form)
-    if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        if(user is None):
-            flash('invalid email', 'error-message')
-        elif (user.check_password(form.password.data) == True):
+    if request.method == 'POST':
+        if form.validate():
+            user = User.query.filter_by(email=form.email.data).first()
             session['user_id'] = user.id
             session['token'] = user.generate_token()
             session['email'] = user.email
             return redirect(url_for('auth.profile'))
-        else:
-            flash('invalid password', 'error-message')
-
-
     return render_template("authentication/signin.html", form=form)

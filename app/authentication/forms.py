@@ -31,3 +31,19 @@ class LoginForm(Form):
                 Required(message='Forgot your email address?')])
     password = PasswordField('Password', [
                 Required(message='Must provide a password.')])
+
+    def __init__(self, *args, **kwargs):
+        Form.__init__(self, *args, **kwargs)
+
+    def validate(self):
+        if not Form.validate(self):
+            return False
+
+        user = User.query.filter_by(email = self.email.data).first()
+        if(user is None):
+            self.email.errors.append("That email is not registered.")
+        elif (user.check_password(self.password.data)):
+            return True
+        else:
+            self.password.errors.append("Incorrect Password")
+        return False
