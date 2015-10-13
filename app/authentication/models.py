@@ -1,3 +1,4 @@
+import datetime
 from flask import request
 from app import db
 from werkzeug import generate_password_hash, check_password_hash
@@ -34,7 +35,7 @@ class User(db.Model):
         return check_password_hash(self.password, password)
 
     def generate_token(self, expiration = 600):
-        s = Serializer('key_word')
+        s = Serializer('key_word', expires_in = expiration)
         return s.dumps({'id': self.id, 'username':self.username, \
         'email':self.email,'ip_address': request.remote_addr})
 
