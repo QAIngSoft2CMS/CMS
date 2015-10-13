@@ -26,6 +26,7 @@ class SignupForm(Form):
         else:
             return True
 
+
 class LoginForm(Form):
     email    = TextField('Email Address', [Email(),
                 Required(message='Forgot your email address?')])

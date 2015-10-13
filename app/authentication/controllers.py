@@ -22,6 +22,7 @@ def signout():
     session.clear()
     return redirect(url_for('auth.signin'))
 
+
 @mod_auth.route('/profile')
 def profile():
 
@@ -33,6 +34,7 @@ def profile():
         return redirect(url_for('auth.signin'))
     else:
         return render_template('authentication/profile.html')
+
 
 @mod_auth.route('/signup/', methods=['GET', 'POST'])
 def signup():
@@ -57,6 +59,7 @@ def signup():
         
     elif request.method == 'GET':
         return render_template("authentication/signup.html", form=form)
+
 
 @mod_auth.route('/signin/', methods=['GET', 'POST'])
 def signin():
