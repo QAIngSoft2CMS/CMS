@@ -1,6 +1,7 @@
 #!flask/bin/python
 import os
 import unittest
+import time
 from flask import (
     Blueprint,
     request,
@@ -17,7 +18,7 @@ from app.authentication.models import User
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-class TestCase(unittest.TestCase):
+class signuptestcase(unittest.TestCase):
     def setUp(self):
         app.config['TESTING'] = True
         app.config['WTF_CSRF_ENABLED'] = False
@@ -119,6 +120,57 @@ class signintestcase(unittest.TestCase):
         usertest = User.query.filter(User.username == 'Testuser').first()
         self.assertTrue(usertest.username == u'Testuser')
 
-        
+class tokentestcase(unittest.TestCase):
+
+    def setUp(self):
+        app.config['TESTING'] = True
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'test.db')
+        app.config['WTF_CSRF_ENABLED'] = False  
+        app.config['SQLALCHEMY_RECORD_QUERIES'] = True
+        self.client = app.test_client()
+        ctx = app.app_context()
+        ctx.push()
+        db.create_all()
+        return app
+
+    def tearDown(self):        
+        db.session.remove()
+        db.drop_all()
+
+    def test_generate_token(self):
+        user = User(username='testuser',
+            email='test@example.com',
+            password='test',
+            role=1,
+            status=1
+            )
+        db.session.add(user)
+        db.session.commit()
+        with app.test_request_context():
+            token = user.generate_token()
+            self.assertTrue(user.verify_token(token) == user)
+            #print "Token data is OK"
+
+
+    def test_verify_token(self):
+        user = User(username='testuser',
+            email='test@example.com',
+            password='test',
+            role=1,
+            status=1
+            )
+        db.session.add(user)
+        db.session.commit()
+        usertest = User.query.filter(User.username == 'Testuser').first()
+        with app.test_request_context():
+            token = user.generate_token(expiration=10)
+            self.assertIs(user.verify_token(token),user)
+            #print "We wait until the token expires"
+            time.sleep(11)
+            self.assertIsNot(user,usertest.verify_token(token))
+            #print "Token expired after expected time"
+
+
+
 if __name__ == '__main__':
     unittest.main()
