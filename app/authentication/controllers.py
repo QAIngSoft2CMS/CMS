@@ -30,6 +30,7 @@ def profile():
 
     user = User.verify_token(session['token'])
     if user is None:
+        flash(u'Token Time Out', 'error')
         return redirect(url_for('auth.signin'))
     else:
         return render_template('authentication/profile.html')
