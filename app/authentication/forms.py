@@ -1,5 +1,7 @@
 from flask.ext.wtf import Form # , RecaptchaField
-from wtforms import TextField, PasswordField, SubmitField # BooleanField
+from wtforms import TextField, PasswordField, SubmitField  # BooleanField
+from wtforms import TextAreaField, HiddenField
+from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import Required, Email, EqualTo, Length, Regexp
 from models import db, User, Section
 
@@ -65,5 +67,5 @@ class LoginForm(Form):
         return False
 
 class SectionCreateForm(Form):
-    name = TextField('Name', [validators.required(), validators.length(min=1,max=240)])
-    description = TextAreaField('Description', [validators.required()])
+    name = TextField('Name', Length(min=1,max=240))
+    description = TextAreaField('Description')
