@@ -54,7 +54,7 @@ class User(db.Model):
 class Section(db.Model):
     __tablename__ = 'section'
     id            = db.Column('id', db.Integer, primary_key=True, autoincrement='ignore_fk')
-    name          = db.Column(100.String(100), unique=True)
+    name          = db.Column(db.String(100), unique=True)
     description   = db.Column(db.Text)
 
     def __unicode__(self):

@@ -1,4 +1,4 @@
-flask from import (
+from flask  import (
     Blueprint,
     request,
     render_template,
@@ -51,9 +51,10 @@ def article_create():
         db.session.add(article)
         db.session.commit()
         return redirect(url_for('index'))
-    return render_template('user/create.html', form=form, user=user, username=username
+    return render_template('user/create.html', form=form, user=user, username=username)
 
-@app.route('/section/create', methods=['GET', 'POST'])
+
+@mod_auth.route('/section/create', methods=['GET', 'POST'])
 def section():
     form = SectionCreateForm()
     section = Section()
@@ -61,10 +62,10 @@ def section():
     name = person.firstname
     if form.validate_on_submit():
         form.populate_obj(section)
-         db.session.add(section)
-         db.session.commit()
-         return redirect(url_for('dashboard', name=name))
-     return render_template('cat_create.html', form=form)
+        db.session.add(section)
+        db.session.commit()
+        return redirect(url_for('dashboard', name=name))
+    return render_template('cat_create.html', form=form)
 
 
 @mod_auth.route('/signup/', methods=['GET', 'POST'])
