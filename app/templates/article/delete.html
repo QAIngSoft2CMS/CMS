@@ -40,8 +40,8 @@
     <form method="POST" action="delete" accept-charset="UTF-8" role="form">
       {{ form.csrf_token }}
       {{ render_field(form.section)}}
-      {{ render_field(form.title, placeholder="Title of article that you want delete.") }}
-      {{ render_field(form.user_name, value=session['email'])}}
+      {{ render_field(form.title, placeholder="Title of article that you want delete.")}}
+      {{ render_field(form.user_name)}}
       <button type="submit" name="submit">Delete</button>
     </form>  
   </div>

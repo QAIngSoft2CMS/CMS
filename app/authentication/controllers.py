@@ -53,6 +53,7 @@ def signup():
             session['user_id'] = new_user.id
             session['token'] = new_user.generate_token()
             session['email'] = new_user.email
+            session['user_name'] = new_user.username
         return redirect(url_for('auth.profile'))
     elif request.method == 'GET':
         return render_template("authentication/signup.html", form=form)
@@ -71,5 +72,6 @@ def signin():
             session['user_id'] = user.id
             session['token'] = user.generate_token()
             session['email'] = user.email
+            session['user_name'] = user.username
             return redirect(url_for('auth.profile'))
     return render_template("authentication/signin.html", form=form)
