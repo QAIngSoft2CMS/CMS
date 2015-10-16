@@ -20,6 +20,7 @@ class User(db.Model):
     role     = db.Column(db.SmallInteger, nullable=False)
     status   = db.Column(db.SmallInteger, nullable=False)
 
+
     def __init__(self, username, email, password,role,status):
 
         self.username = username.title()
@@ -28,16 +29,20 @@ class User(db.Model):
         self.role     = role
         self.status   = status
 
+
     def __repr__(self):
         return '<User %r>' % (self.username)
+
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
+
     def generate_token(self, expiration = 600):
-        s = Serializer('key_word', expires_in = expiration)
+        s = Serializer('key_word', expires_in=expiration)
         return s.dumps({'id': self.id, 'username':self.username, \
         'email':self.email,'ip_address': request.remote_addr})
+
 
     @staticmethod
     def verify_token(token):
