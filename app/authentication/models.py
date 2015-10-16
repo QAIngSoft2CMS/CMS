@@ -39,7 +39,7 @@ class User(db.Model):
 
 
     def generate_token(self, expiration = 600):
-        s = Serializer('key_word', expires_in = expiration)
+        s = Serializer('key_word', expires_in=expiration)
         return s.dumps({'id': self.id, 'username':self.username, \
         'email':self.email,'ip_address': request.remote_addr})
 
