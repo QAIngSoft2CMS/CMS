@@ -9,6 +9,7 @@
 #binario es 101, con esta manera se puede aumentar mas permisos por si el sistema
 #crece, poniendo un nuevo permiso por ejemplo: edicion que representaria a 8
 #como el 4 bit.
+
 ReadRole    = 1
 CommentRole = 1<<1
 WriteRole   = 1<<2

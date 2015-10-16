@@ -7,8 +7,10 @@ from app.sections.models import Sections
 
 strip_filter = lambda x: x.strip() if x else None
 
+
 def section_choice():
     return Sections.query.all()
+
 
 class ArticleCreateForm(Form):
     title     = TextField('Title', [Required("Please enter a title")],
@@ -18,8 +20,10 @@ class ArticleCreateForm(Form):
     section   = QuerySelectField('Section', query_factory=section_choice )
     user_name = HiddenField()
 
+
 class ArticleUpdateForm(Form):
     id = HiddenField()
+
 
 class SectionCreateForm(Form):
     name = TextField('Name', [validators.Length(min=1,max=240)])

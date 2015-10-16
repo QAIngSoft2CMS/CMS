@@ -15,18 +15,20 @@ class SignupForm(Form):
                 Required(message='Please enter a password.')])
     submit   = SubmitField("Create account")
 
+
     def __init__(self, *args, **kwargs):
         Form.__init__(self, *args, **kwargs)
+
 
     def validate(self):
         if not Form.validate(self):
             return False
-
         user = User.query.filter_by(email = self.email.data.lower()).first()
         if user:
             self.email.errors.append("That email is already taken.")
         else:
             return True
+
 
 class LoginForm(Form):
     email    = TextField('Email Address', [Email(),
@@ -34,13 +36,14 @@ class LoginForm(Form):
     password = PasswordField('Password', [
                 Required(message='Must provide a password.')])
 
+
     def __init__(self, *args, **kwargs):
         Form.__init__(self, *args, **kwargs)
+
 
     def validate(self):
         if not Form.validate(self):
             return False
-
         user = User.query.filter_by(email = self.email.data).first()
         if(user is None):
             self.email.errors.append("That email is not registered.")

@@ -18,25 +18,31 @@ class Article(db.Model):
                         ondelete="CASCADE"))
     user            = db.relationship(User)
 
+
     @classmethod
     def all(cls):
         return Article.query_order_by(desc(Article.created)).all()
+
 
     @classmethod
     def find_by_id(cls, id):
         return Article.query.filter(Article.id == id).first()
 
+
     @classmethod
     def find_by_author(cls, name):
         return Article.query.filter(Article.user_name == name).all()
+
 
     @classmethod
     def find_by_section(cls, section):
         return Article.query.filter(Article.category_name == section).all()
 
+
     @property
     def slug(self):
         return urlify(self.title)
+
 
     @property
     def created_in_words(self):
