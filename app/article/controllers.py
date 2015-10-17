@@ -18,7 +18,7 @@ from app.article.models import Article
 mod_art = Blueprint('art', __name__, url_prefix='/art')
 
 
-@mod_art.route('/create', methods=['GET', 'POST'])
+@mod_art.route('/create/', methods=['GET', 'POST'])
 def article_create():
 
     #if 'token' not in session:
