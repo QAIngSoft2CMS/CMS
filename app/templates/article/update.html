@@ -40,15 +40,13 @@
     
     <form method="POST" action="." accept-charset="UTF-8" role="form">
       {{ form.csrf_token }}
+      {{ render_field(form.id_article)}}
       {{ render_field(form.section)}}
       {{ render_field(form.title, placeholder="Title of article.")}}
       {{ render_field(form.body, placeholder="body of article.")}}
       {{ render_field(form.user_name)}}
 
       <button type="submit" name="submit">Update</button>
-    </form>         
-      
-
-    </form>  
+    </form>
   </div>
 </div>

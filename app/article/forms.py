@@ -22,7 +22,13 @@ class ArticleCreateForm(Form):
 
 
 class ArticleUpdateForm(Form):
-    id = HiddenField()
+    title       = TextField('Title', [Required("Please enter a title")],
+                        filters=[strip_filter])
+    body        = TextAreaField('Body',[Required("Please enter a body")],
+                        filters=[strip_filter])
+    section     = QuerySelectField('Section', query_factory=section_choice)
+    user_name   = HiddenField()
+    id_article  = HiddenField()
 
 
 class ArticleDeleteForm(Form):
