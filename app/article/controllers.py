@@ -20,19 +20,29 @@ mod_art = Blueprint('art', __name__, url_prefix='/art')
 
 @mod_art.route('/create', methods=['GET', 'POST'])
 def article_create():
-    if 'email' not in session:
-        return redirect(url_for('sigin'))
-    user     = User.query.filter_by(email=session['email']).first()
+
+    #if 'token' not in session:
+    #    return redirect(url_for('signin'))    
+    #id_user  = User.verify_token(session['token'])
+    #user     = User.query.filter_by(id=id_user).first()
+    user      = User.query.filter_by(email=session['email']).first()
+
+    if user is None:        
+        return redirect(url_for('auth.signin'))
+
     username = user.username
     article  = Article()
     form     = ArticleCreateForm()
     form.user_name.data = user.username
-    if form.validate_on_submit():
-        form.populate_obj(article)
-        db.session.add(article)
-        db.session.commit()
-        return redirect(url_for('index'))
-    return render_template('article/create.html', form=form, user=user, username=username)
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            form.populate_obj(article)
+            db.session.add(article)
+            db.session.commit()
+            return 'CREADO'
+    return render_template('article/create.html', form=form , user=user, username=username)
+
+    
 
 
 @mod_art.route('/delete', methods=['GET', 'POST'])
