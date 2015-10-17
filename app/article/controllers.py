@@ -69,5 +69,5 @@ def article_views():
     user  = User.verify_token(session['token'])
     if user is None:
         return redirect(url_for('auth.signin'))
-    article = Article.query.all()
+    article = Article.find_by_author(user.username)
     return render_template("article/views.html", article = article)
