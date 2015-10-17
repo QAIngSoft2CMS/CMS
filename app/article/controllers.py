@@ -71,3 +71,32 @@ def article_views():
         return redirect(url_for('auth.signin'))
     article = Article.query.all()
     return render_template("article/views.html", article = article)
+
+@mod_art.route('/modify/', methods=['GET', 'POST'])
+def article_update():
+    if 'token' not in session:
+        flash(u'You Need Login', 'error')
+        return redirect(url_for('auth.signin'))
+    user  = User.verify_token(session['token'])
+    if user is None:
+        return redirect(url_for('auth.signin'))
+    
+    id_article = request.args.get('id')    
+    my_article= Article.find_by_id(id_article)    
+    
+    if user.username != my_article.user_name:
+        return 'No tiene permisos'
+
+    form      = ArticleCreateForm()
+    form.user_name.data = my_article.user_name
+    form.title.data     = my_article.title
+    form.body.data      = my_article.body
+    form.section.data   = my_article.section
+    
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            db.session.delete(article)
+            db.session.commit()
+            return 'Article updated'
+    
+    return render_template('article/update.html', form=form, id=id)
