@@ -17,7 +17,7 @@
 
 <div>
   <div>
-    <legend>Sign in</legend>
+    <legend>Delete Article</legend>
     {% with errors = get_flashed_messages(category_filter=["error"]) %}
     {% if errors %}
     <div>
@@ -37,7 +37,7 @@
     {% endfor %}
     </div>
     {% endif %}
-    <form method="POST" action="delete" accept-charset="UTF-8" role="form">
+    <form method="POST" action="." accept-charset="UTF-8" role="form">
       {{ form.csrf_token }}
       {{ render_field(form.section)}}
       {{ render_field(form.title, placeholder="Title of article that you want delete.")}}
