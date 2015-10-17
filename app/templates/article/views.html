@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<center>
+<h1>Ver Contenido</h1>
+<table>
+	<tr>
+		<td><a href="/art/create"><img width="15%" height="20%" align="right" src="{{url_for('static', filename='Images/add.png')}}"> <button> create </button> </a>
+		</td>
+	</tr>
+	<tr>
+	<td>
+<table border="1">	
+	<tr>
+		<td>Id</td>		
+		<td>Titulo</td>
+		<td>Eliminar</td>
+		<td>Modificar</td>	
+
+	</tr>
+	{% for item in articles %}	
+	<tr>
+		<td>{{item.id}}</td>
+		<td>{{item.title}}</td>
+		<td><center><a href="/art/delete?id={{item.id}}"><img width="30%" height="30%" src="{{url_for('static', filename='Images/delete.png')}}"></a></center></td>
+		<td><center><a href="/art/modify?id={{item.id}}"><img width="30%" height="30%" src="{{url_for('static', filename='Images/edit.png')}}"></a></center></td>
+	</tr>
+	{%endfor%}
+
+</table>
+</td>
+</tr>
+</table>
+	
+	</center>
+{% endblock %}
