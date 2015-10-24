@@ -1,11 +1,9 @@
 import datetime
-from flask import request
+from flask import session, redirect, current_app, request
 from app import db
 from werkzeug import generate_password_hash, check_password_hash
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
-
-
 
 
 class User(db.Model):
@@ -42,6 +40,18 @@ class User(db.Model):
         s = Serializer('key_word', expires_in=expiration)
         return s.dumps({'id': self.id, 'username':self.username, \
         'email':self.email,'ip_address': request.remote_addr})
+    
+    
+    def get_token(self, expiration=1800):
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'user': self.id}).decode('utf-8')
+    
+    
+    def get_id(self):
+        try:
+            return unicode(self.id)  # python 2
+        except NameError:
+            return str(self.id)  # python 3
 
 
     @staticmethod
@@ -55,3 +65,17 @@ class User(db.Model):
             return None # invalid token
         user = User.query.get(data['id'])
         return user
+    
+    
+    @staticmethod
+    def verify_token_email(token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except:
+            return None
+        id = data.get('user')
+        if id:
+            return User.query.get(id)
+        return None
+    

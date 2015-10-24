@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Recover Password</title>
+</head>
+<body>
+<center>
+<h1>Recuperar Cuenta</h1>
+<form action="" method="post" name="recover_pass">
+		{{ form.hidden_tag() }}
+		<p>
+			Por favor ingrese su direccion de correo electronico:<br>
+			{{ form.email(size = 48) }}<br>
+			{% for error in form.email.errors %}
+				<span style="color: red;">[{{ error }}]</span>
+			{% endfor %}<br>
+		</p>
+		<p><input type="submit" value="Aceptar"> </p>
+	</form>
+	</center>
+</body>
+</html>
