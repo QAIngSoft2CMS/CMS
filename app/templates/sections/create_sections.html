@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Create Sections</title>
+</head>
+<body>
+<center>
+<h1>Crear Seccion</h1>
+<form action="" method="post" name="change_pass">
+		{{ form.hidden_tag() }}
+		<p>
+			Digite el nombre de la nueva seccion:<br>
+			{{ form.section(size = 48) }}<br><br>
+			Ingrese la descripcion de la seccion:<br>
+			{{ form.description(size = 48) }}<br><br>
+			{% for error in form.errors %}
+				<span style="color: red;">[{{ error }}]</span>
+			{% endfor %}<br>
+		</p>
+		<p><input type="submit" value="Aceptar"> </p>
+	</form>
+	</center>
+</body>
+</html>

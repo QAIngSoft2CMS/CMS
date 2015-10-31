@@ -1,5 +1,6 @@
 # Import flask and template operators
 from flask import Flask, render_template
+from flask_mail import Mail
 
 # Import SQLAlchemy
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -28,10 +29,12 @@ def not_found(error):
 # Import a module / component using its blueprint handler variable (mod_auth)
 from app.authentication.controllers import mod_auth as auth_module
 from app.article.controllers import mod_art as art_module
+from app.sections.controllers import mod_sec as sec_module
 
 # Register blueprint(s)
 app.register_blueprint(auth_module)
 app.register_blueprint(art_module)
+app.register_blueprint(sec_module)
 # app.register_blueprint(xyz_module)
 # ..
 
