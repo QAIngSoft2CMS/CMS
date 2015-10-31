@@ -36,7 +36,7 @@ class Article(db.Model):
 
     @classmethod
     def find_by_section(cls, section):
-        return Article.query.filter(Article.category_name == section).all()
+        return Article.query.filter(Article.section_name == section).all()
 
 
     @property
