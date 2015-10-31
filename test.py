@@ -85,7 +85,7 @@ class articlemodelcase(unittest.TestCase):
             )
         db.session.add(user)
         db.session.commit()
-        testsection = Sections(section_='sectionname',description_='section created to test an article') 
+        testsection = Sections(section_='sectionname',description_='section created to test an article')
         db.session.add(testsection)
         db.session.commit()
         usertest = User.query.filter(User.username == 'Testuser').first()
@@ -120,15 +120,15 @@ class CreateAndViewSectionsTestCase(unittest.TestCase):
 
         db.session.remove()
         db.drop_all()
-    
+
     #testing view sections
     def test_view_sections(self):
 
         tester = app.test_client(self)
         response = tester.get('/sec/views_sections/', content_type='html/text')
         self.assertEqual(response.status_code, 200)
-        
-    
+
+
     #testing create sections
     def test_get_create_sections(self):
 
@@ -136,8 +136,8 @@ class CreateAndViewSectionsTestCase(unittest.TestCase):
         response = tester.get('/sec/create_sections/', content_type='html/text')
         self.assertIn(b'Digite el nombre de la nueva seccion',response.data)
         self.assertEqual(response.status_code, 200)
-     
-    # now testing the post method to create sections    
+
+    # now testing the post method to create sections
     def test_post_create_sections(self):
         tester = app.test_client(self)
 
@@ -151,6 +151,41 @@ class CreateAndViewSectionsTestCase(unittest.TestCase):
         self.assertIn(b'Example Of Test Section', response.data)
         self.assertIn(b'example of description', response.data)
 
+class ModifySectionTestCase(unittest.TestCase):
+    def setUp(self):
+        app.config['TESTING'] = True
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'test.db')
+        app.config['WTF_CSRF_ENABLED'] = False
+        app.config['SQLALCHEMY_RECORD_QUERIES'] = True
+        self.app = app.test_client()
+        db.create_all()
+        ctx = app.app_context()
+        ctx.push()
+        return app
+
+    def tearDown(self):
+        db.session.remove()
+        db.drop_all()
+
+    def test_modify_section_get(self):
+        test = app.test_client(self)
+        response = test.get('/sec/modify_sections', content_type='html/text')
+        self.assertEqual(response.status_code,301)
+
+    def test_modify_section_post(self):
+        test = app.test_client(self)
+        section = Sections('testsection', 'testdescription')
+        db.session.add(section)
+        db.session.commit()
+        print section.id
+        url = '/sec/modify_sections/?id='+str(section.id)
+        data = {'section': 'testsection2','description': 'testdescription2'}
+        response = test.post(
+            url,
+            data,
+            follow_redirects=True
+            )
+        print response.data
 
 if __name__ == '__main__':
     unittest.main()
