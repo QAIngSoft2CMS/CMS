@@ -104,6 +104,53 @@ class articlemodelcase(unittest.TestCase):
         self.assertTrue(testarticle.find_by_author(testarticle.user_name)!= None)
         self.assertTrue(testarticle.find_by_section('testsection')!= None)
 
+class CreateAndViewSectionsTestCase(unittest.TestCase):
+    def setUp(self):
+
+        app.config['TESTING'] = True
+        app.config['WTF_CSRF_ENABLED'] = False
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'test.db')
+        self.app = app.test_client()
+        db.create_all()
+        ctx = app.app_context()
+        ctx.push()
+        return app
+
+    def tearDown(self):
+
+        db.session.remove()
+        db.drop_all()
+    
+    #testing view sections
+    def test_view_sections(self):
+
+        tester = app.test_client(self)
+        response = tester.get('/sec/views_sections/', content_type='html/text')
+        self.assertEqual(response.status_code, 200)
+        
+    
+    #testing create sections
+    def test_get_create_sections(self):
+
+        tester = app.test_client(self)
+        response = tester.get('/sec/create_sections/', content_type='html/text')
+        self.assertIn(b'Digite el nombre de la nueva seccion',response.data)
+        self.assertEqual(response.status_code, 200)
+     
+    # now testing the post method to create sections    
+    def test_post_create_sections(self):
+        tester = app.test_client(self)
+
+        data = {'section': 'example of test section', 'description': 'example of description'}
+        response = tester.post(
+             '/sec/create_sections/',
+             data= data,
+             follow_redirects=True
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Example Of Test Section', response.data)
+        self.assertIn(b'example of description', response.data)
+
 
 if __name__ == '__main__':
     unittest.main()
