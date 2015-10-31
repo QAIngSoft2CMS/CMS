@@ -17,7 +17,7 @@
 
 <div>
   <div>
-    <legend>Sign up</legend>
+    <legend>Modify Article</legend>
     {% with errors = get_flashed_messages(category_filter=["error"]) %}
     {% if errors %}
     <div>
@@ -37,16 +37,16 @@
     {% endfor %}
     </div>
     {% endif %}
-    <form method="POST" action="." role="form">
+    
+    <form method="POST" action="." accept-charset="UTF-8" role="form">
       {{ form.csrf_token }}
-      {{ render_field(form.username, placeholder="Your username",
-                                  autofocus="") }}
-      {{ render_field(form.email, placeholder="Your Email Address",
-                                  autofocus="") }}
-      {{ render_field(form.password, placeholder="Password") }}
-      <div>
-      </div>
-      {{ render_field(form.submit) }}
-    </form>  
+      {{ render_field(form.id_article)}}
+      {{ render_field(form.section)}}
+      {{ render_field(form.title, placeholder="Title of article.")}}
+      {{ render_field(form.body, placeholder="body of article.")}}
+      {{ render_field(form.user_name)}}
+
+      <button type="submit" name="submit">Update</button>
+    </form>
   </div>
 </div>
