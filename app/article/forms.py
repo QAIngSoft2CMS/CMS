@@ -29,9 +29,3 @@ class ArticleUpdateForm(Form):
     section     = QuerySelectField('Section', query_factory=section_choice)
     user_name   = HiddenField()
     id_article  = HiddenField()
-
-
-class ArticleDeleteForm(Form):
-    section     = QuerySelectField('Section', query_factory=section_choice)
-    title       = TextField('Title',[Required("Please enter a title")])
-    user_name   = HiddenField()

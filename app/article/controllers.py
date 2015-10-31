@@ -9,7 +9,7 @@ from flask  import (
     url_for
 )
 from app import db
-from app.article.forms import ArticleCreateForm, ArticleDeleteForm, ArticleUpdateForm
+from app.article.forms import ArticleCreateForm,  ArticleUpdateForm
 from app.authentication.models import User
 from app.sections.models import Sections
 from app.article.models import Article
@@ -39,7 +39,7 @@ def article_create():
     return render_template('article/create.html', form=form , user=user, username=username)
     
 
-@mod_art.route('/delete/', methods=['GET', 'POST'])
+@mod_art.route('/delete/', methods=['GET'])
 def article_delete():
     if 'token' not in session:
         flash(u'You Need Login', 'error')
@@ -47,18 +47,14 @@ def article_delete():
     user  = User.verify_token(session['token'])
     if user is None:
         return redirect(url_for('auth.signin'))
-    form = ArticleDeleteForm()
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            section = str(form.section.data)
-            section = section[section.find("'") + 1 : section.find(">") - 1]
-            article = Article.query.filter_by(user_name=user.username, section_name=section, title=form.title.data).first()
-            if(not (article is None)):
-                db.session.delete(article)
-                db.session.commit()
-                return 'Article Deleted'
-            flash(u'This Article not exist', 'error')
-    return render_template('article/delete.html', form=form)
+    id = request.args.get('id',None)
+    if(id):
+        article = Article.query.filter_by(id=id).first()
+        if(not (article is None)):
+            db.session.delete(article)
+            db.session.commit()
+            flash(u'Article Deleted','messages')
+        return redirect(url_for('art.article_views'))
 
 
 @mod_art.route('/views/', methods=['GET'])
