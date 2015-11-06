@@ -105,5 +105,48 @@ class articlemodelcase(unittest.TestCase):
         self.assertTrue(testarticle.find_by_section('testsection')!= None)
 
 
+class sectiontestcasedelete(unittest.TestCase):
+    def setUp(self):
+        app.config['TESTING'] = True
+        app.config['WTF_CSRF_ENABLED'] = False
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'test.db')
+        self.app = app.test_client()
+        db.create_all()
+        ctx = app.app_context()
+        ctx.push()
+        return app
+
+
+    def tearDown(self):
+        db.session.remove()
+        db.drop_all()
+
+
+    def testsectiondeletepost(self):
+
+        user = User(username='testuser',
+            email='test@example.com',
+            password='test',
+            role=1,
+            status=1
+            )
+        db.session.add(user)
+        db.session.commit()
+        usertest = User.query.filter(User.username == 'Testuser').first()        
+        section_todelete = Sections(
+            section_='testname',
+            description_='testsection',
+            )
+        db.session.add(section_todelete)
+        db.session.commit()
+        test = app.test_client(self)
+        response = test.get('sec/delete_sections?id=1')
+        self.assertTrue(response.status_code == 301)
+        testsection = Sections.query.filter(Sections.section_name == 'testname').first()
+        self.assertTrue(testsection == None)
+
+
+
+
 if __name__ == '__main__':
     unittest.main()
