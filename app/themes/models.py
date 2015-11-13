@@ -13,11 +13,11 @@ class Theme(db.Model):
     user_name     = db.Column(db.String(10), db.ForeignKey(User.username))
 
 
-    def __init__(self, name, default_use, title,resources,description,username):
+    def __init__(self, name, default_use, title,resources,description,user_name):
 
-        self.username       = name
+        self.name           = name
         self.deafult_use    = default_use
         self.title          = title
         self.resources      = resources
         self.description    = description
-        self.username       = username
+        self.user_name      = user_name
