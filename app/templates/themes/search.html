@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Search Themes</title>
+</head>
+<body>
+<center>
+<h1>Buscar Plantillas</h1>
+<form action="" method="post" name="search_theme">
+		{{ form.hidden_tag() }}
+		<p>
+			Ingrese un nombre de plantilla:<br>
+			{{ form.name(size = 48) }}<br>
+            o Ingrese un ID: <br>
+			{{ form.id(size = 48) }}<br>
+		</p>
+		<p><input type="submit" value="Aceptar"> </p>
+	</form>
+	</center>
+</body>
+</html>

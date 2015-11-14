@@ -27,3 +27,7 @@ class ConfigurationTheme(Form):
 
 class UpdateTheme(Form):
 	fileMarkdown = FileField('Plese entrer you Theme.md')
+
+class SearchThemeForm(Form):
+    name = TextField('Name Theme')
+    id = TextField('Id Theme')
