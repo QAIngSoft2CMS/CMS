@@ -1,0 +1,30 @@
+{% block content %}
+<center>
+<h1>Ver Plantillas</h1>
+<table>
+	<tr>
+	<td>
+<table border="1">	
+	<tr>
+		<td>Id</td>
+		<td>Nombre de la Plantilla</td>
+		<td>Descripcion</td>
+		<td>Eliminar</td>
+		<td>Modificar</td>	
+
+	</tr>
+    {% for item in themes %}
+	<tr>
+		<td>{{item.id}}</td>
+		<td>{{item.name}}</td>
+		<td>{{item.description}}</td>
+	</tr>
+    {%endfor%}
+
+</table>
+</td>
+</tr>
+</table>
+	
+	</center>
+{% endblock %}

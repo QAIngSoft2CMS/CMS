@@ -23,3 +23,7 @@ class ConfigurationTheme(Form):
 
     def __init__(self, *args, **kwargs):
         Form.__init__(self, *args, **kwargs)
+
+class SearchThemeForm(Form):
+    name = TextField('Name Theme')
+    id = TextField('Id Theme')

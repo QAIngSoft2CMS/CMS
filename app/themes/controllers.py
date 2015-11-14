@@ -12,6 +12,7 @@ from app import db
 from app.authentication.constants import ReadRole, CommentRole, WriteRole
 from app.authentication.models import User
 from app.themes.forms import ConfigurationForm
+from app.themes.forms import SearchThemeForm
 from app.themes.models import Theme
 
 mod_theme = Blueprint('themes', __name__, url_prefix='/themes')
@@ -71,3 +72,40 @@ def delete_theme():
     db.session.delete(theme)
     db.session.commit()
     return redirect("/themes/view_themes")
+
+@mod_theme.route('/view_themes/')
+def view_themes():
+    
+    themes_filter = Theme.query.filter().all()
+    return render_template("themes/view_themes.html",themes = themes_filter)
+    
+@mod_theme.route('/search_filter/',methods=['GET', 'POST'])
+def view_search_themes_filter():
+    
+    id_theme = request.args.get("id")
+    name_theme = request.args.get("name")
+    str_name_theme = '%'+str(name_theme)+'%'
+    
+    if (id_theme == '') and (name_theme != ''):
+        themes_filter = Theme.query.filter(Theme.name.ilike(str_name_theme)).all()
+        return render_template("themes/view_themes.html",themes = themes_filter)
+    
+    elif (name_theme == '') and (id_theme != ''):
+        themes_filter = Theme.query.filter_by(id=id_theme).all()
+        return render_template("themes/view_themes.html",themes = themes_filter)
+
+    themes_filter = Theme.query.filter_by(id=id_theme,name = name_theme).all()
+    return render_template("themes/view_themes.html",themes = themes_filter)
+
+@mod_theme.route('/search_theme',methods=('GET','POST')) 
+def search_themes():
+
+    form = SearchThemeForm()
+    if form.validate():
+        id_theme = form.id.data
+        name_theme = form.name.data
+        if (id_theme == '') and (name_theme == ''):
+            return redirect(url_for('themes.view_themes'))
+        return redirect(url_for('themes.view_search_themes_filter',id=id_theme,name=name_theme))
+    return render_template("themes/search.html", form=form)
+
