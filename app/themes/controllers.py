@@ -32,7 +32,7 @@ def configuration_theme():
     form.user_name.data = user.username
     if request.method == 'POST':
         if form.validate():
-        #falta mejorar el logo 
+        #falta mejorar el logo
             theme = Theme(name=form.name.data,
                           default_use=form.default_use.data,
                           title=form.title.data,
@@ -43,7 +43,7 @@ def configuration_theme():
                           description=form.description.data,
                           username=form.user_name.data)
             db.session.add(theme)
-            db.session.commit()            
+            db.session.commit()
             return redirect(url_for('auth.profile'))
     return render_template("themes/configuration.html", form=form)
 
@@ -63,3 +63,11 @@ def signin():
             session['user_name'] = user.username
             return redirect(url_for('auth.profile'))
     return render_template("authentication/signin.html", form=form)
+
+@mod_theme.route('/delete_theme/', methods=['GET','POST'])
+def delete_theme():
+    id_ = request.args.get('id',None)
+    theme = Theme.query.get(id_)
+    db.session.delete(theme)
+    db.session.commit()
+    return redirect("/themes/view_themes")
