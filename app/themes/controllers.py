@@ -13,7 +13,7 @@ from app import app
 from app.authentication.constants import ReadRole, CommentRole, WriteRole
 from app.authentication.models import User
 from app.themes.forms import UpdateTheme
-#from app.themes.forms import ConfigurationForm
+from app.themes.forms import ConfigurationThemeForm
 from app.themes.forms import SearchThemeForm
 from app.themes.models import Theme
 from werkzeug import secure_filename
@@ -25,9 +25,9 @@ import os
 
 mod_theme = Blueprint('themes', __name__, url_prefix='/themes')
 
-@mod_theme.route('/config', methods=['GET', 'POST'])
+@mod_theme.route('/config/', methods=['GET', 'POST'])
 def configuration_theme():
-    if 'token' not in session:
+    """if 'token' not in session:
         return redirect(url_for('auth.signin'))
     user = User.verify_token(session['token'])
     if user is None:
@@ -36,24 +36,28 @@ def configuration_theme():
     if not user.role>>2:
         #return acces denied
         abort(401)
-    form = ConfigurationForm()
-    form.user_name.data = user.username
+    """
+    form = ConfigurationThemeForm()
+    form.user_name.data = 'vitohe102'
     if request.method == 'POST':
+        print '00'
         if form.validate():
         #falta mejorar el logo
+            file = request.files['logo']
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['BASE_DIR']+'/app/static/themes/',
+                                       'vitohe102'+filename))
             theme = Theme(name=form.name.data,
                           default_use=form.default_use.data,
-                          title=form.title.data,
-                          #
-                          logo=form.logo.data,
-                          #
-                          resources='themes/'+name,
+                          title=form.title.data,                         #
+                          logo='/app/static/themes/'+'vitohe102'+'/'+filename,                          
+                          resources=form.name.data,
                           description=form.description.data,
-                          username=form.user_name.data)
+                          user_name=form.user_name.data)
             db.session.add(theme)
             db.session.commit()
-            return redirect(url_for('auth.profile'))
-    #return render_template("themes/configuration.html", form=form)
+            return redirect(url_for('themes.view_themes'))
+    return render_template("themes/configuration.html", form=form)
 
 
 @mod_theme.route('/delete_theme/', methods=['GET','POST'])
