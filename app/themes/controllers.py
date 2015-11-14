@@ -9,7 +9,6 @@ from flask import (
     url_for
 )
 from app import db
-from app import vglobs
 from app import app
 from app.authentication.constants import ReadRole, CommentRole, WriteRole
 from app.authentication.models import User
@@ -67,7 +66,7 @@ def delete_theme():
 
 def allowed_file(filename):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1] in vglobs.ALLOWED_EXTENSIONS
+           filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
 
 @mod_theme.route('/upload_theme/', methods=['GET', 'POST'])
 def upload_theme():
@@ -85,7 +84,8 @@ def upload_theme():
                 file = request.files['fileMarkdown']
                 if file and allowed_file(file.filename):
                     filename = secure_filename(file.filename)
-                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    #file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    file.save(os.path.join(app.config['BASE_DIR']+'/app/static/themes', filename))
         return render_template('themes/update.html',form=form)
     else:
         form = UpdateTheme(csrf_enabled=False)

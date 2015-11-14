@@ -9,6 +9,8 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 # SQLite for this example
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'app.db')
 DATABASE_CONNECT_OPTIONS = {}
+UPLOAD_FOLDER = os.path.join(BASE_DIR, 'app/static/themes/')
+ALLOWED_EXTENSIONS = set(['md','png'])
 
 # Application threads. A common general assumption is
 # using 2 per available processor cores - to handle
