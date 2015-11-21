@@ -23,7 +23,9 @@ from wtforms import StringField
 from wtforms.validators import DataRequired
 import os
 
+
 mod_theme = Blueprint('themes', __name__, url_prefix='/themes')
+
 
 @mod_theme.route('/config/', methods=['GET', 'POST'])
 def configuration_theme():
@@ -72,38 +74,37 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
 
+
 @mod_theme.route('/upload_theme/', methods=['GET', 'POST'])
 def upload_theme():
-    #if 'token' not in session:
-    #    return redirect(url_for('auth.signin'))
-    #user = User.verify_token(session['token'])
-    #if user is None:
-    #    flash(u'Token Time Out', 'error')
-    #    return redirect(url_for('auth.signin'))
+    """if 'token' not in session:
+        return redirect(url_for('auth.signin'))
+    user = User.verify_token(session['token'])
+    if user is None:
+        flash(u'Token Time Out', 'error')
+        return redirect(url_for('auth.signin'))"""
     if request.method == 'POST':
         form = UpdateTheme(csrf_enabled=False)
         if form.validate_on_submit():
             if form.fileMarkdown.data:
-                #app.config['UPLOAD_FOLDER'] = vglobs.UPLOAD_FOLDE
                 file = request.files['fileMarkdown']
                 if file and allowed_file(file.filename):
                     filename = secure_filename(file.filename)
-                    #file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                     file.save(os.path.join(app.config['BASE_DIR']+'/app/static/themes', filename))
         return render_template('themes/update.html',form=form)
     else:
         form = UpdateTheme(csrf_enabled=False)
         return render_template('themes/update.html',form=form)
 
+
 @mod_theme.route('/view_themes/')
 def view_themes():
-
     themes_filter = Theme.query.filter().all()
     return render_template("themes/view_themes.html",themes = themes_filter)
 
+
 @mod_theme.route('/search_filter/',methods=['GET', 'POST'])
 def view_search_themes_filter():
-
     id_theme = request.args.get("id")
     name_theme = request.args.get("name")
     str_name_theme = '%'+str(name_theme)+'%'
@@ -119,9 +120,9 @@ def view_search_themes_filter():
     themes_filter = Theme.query.filter_by(id=id_theme,name = name_theme).all()
     return render_template("themes/view_themes.html",themes = themes_filter)
 
+
 @mod_theme.route('/search_theme',methods=('GET','POST'))
 def search_themes():
-
     form = SearchThemeForm()
     if form.validate():
         id_theme = form.id.data

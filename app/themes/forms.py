@@ -19,10 +19,11 @@ class ConfigurationThemeForm(Form):
     description    = TextAreaField('description',[Required("Please enter a description")],
                         filters=[strip_filter])
     user_name      = HiddenField()
-    
+
 
 class UpdateTheme(Form):
 	fileMarkdown = FileField('Plese entrer you Theme.md')
+
 
 class SearchThemeForm(Form):
     name = TextField('Name Theme')
