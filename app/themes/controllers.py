@@ -50,7 +50,7 @@ def configuration_theme():
             theme = Theme(name=form.name.data,
                           default_use=form.default_use.data,
                           title=form.title.data,                         #
-                          logo='/app/static/themes/'+'vitohe102'+'/'+filename,                          
+                          logo='/app/static/themes/'+'vitohe102'+'/'+filename,
                           resources=form.name.data,
                           description=form.description.data,
                           user_name=form.user_name.data)

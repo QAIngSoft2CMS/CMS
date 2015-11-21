@@ -3,7 +3,6 @@ from flask import Flask, render_template
 from flask_mail import Mail
 # Import SQLAlchemy
 from flask.ext.sqlalchemy import SQLAlchemy
-import globs as vglobs
 import os
 
 # Import Bower
