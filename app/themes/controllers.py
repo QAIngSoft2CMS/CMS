@@ -66,6 +66,7 @@ def configuration_theme():
 def delete_theme():
     id_ = request.args.get('id',None)
     theme = Theme.query.get(id_)
+    os.remove(os.path.join(app.config['BASE_DIR']+'app/static/themes',theme.name))
     db.session.delete(theme)
     db.session.commit()
     return redirect("/themes/view_themes")
