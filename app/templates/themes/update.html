@@ -38,8 +38,9 @@
     </div>
     {% endif %}
     <form method='POST' action = "." enctype="multipart/form-data">
-      {{ form.hidden_tag() }}
-      {{ form.fileMarkdown.label }} {{ form.fileMarkdown }}
+      {% for field in form %}
+        {{ field.label }}{{ field }}<br>
+      {% endfor %}
       <br/>
       <input type='submit' value="Upload">
     </form>

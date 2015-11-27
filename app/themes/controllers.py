@@ -55,7 +55,8 @@ def configuration_theme():
                           logo='/app/static/themes/'+'vitohe102'+'/'+filename,
                           resources=form.name.data,
                           description=form.description.data,
-                          user_name=form.user_name.data)
+                          user_name=form.user_name.data,
+                          allow_changes=0)
             db.session.add(theme)
             db.session.commit()
             return redirect(url_for('themes.view_themes'))
@@ -84,14 +85,26 @@ def upload_theme():
     if user is None:
         flash(u'Token Time Out', 'error')
         return redirect(url_for('auth.signin'))"""
+
     if request.method == 'POST':
         form = UpdateTheme(csrf_enabled=False)
+        form.user_name.data = 'admin1'
         if form.validate_on_submit():
             if form.fileMarkdown.data:
                 file = request.files['fileMarkdown']
                 if file and allowed_file(file.filename):
                     filename = secure_filename(file.filename)
                     file.save(os.path.join(app.config['BASE_DIR']+'/app/static/themes', filename))
+                    theme = Theme(name=form.name.data,
+                                  default_use=form.default_use.data,
+                                  title=form.title.data,
+                                  logo='/app/static/themes/'+filename,
+                                  resources=form.name.data,
+                                  description=form.description.data,
+                                  user_name= form.user_name.data,
+                                  allow_changes=0)
+                    db.session.add(theme)
+                    db.session.commit()
         return render_template('themes/update.html',form=form)
     else:
         form = UpdateTheme(csrf_enabled=False)

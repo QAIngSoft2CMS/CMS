@@ -21,8 +21,19 @@ class ConfigurationThemeForm(Form):
     user_name      = HiddenField()
 
 
+
 class UpdateTheme(Form):
-	fileMarkdown = FileField('Plese entrer you Theme.md')
+    name           = HiddenField()
+    default_use    = RadioField('Default?',
+                               [Required()],
+                                choices=[('yes', 'Default'), ('no', 'Not default')], default='yes'
+                                )
+    title          = TextField('Title',[Required("Please enter a title")],filters=[strip_filter])
+    resources      = HiddenField()
+    fileMarkdown   = FileField('Plese entrer your theme.md')
+    description    = TextAreaField('description',[Required("Please enter a description")],
+                        filters=[strip_filter])
+    user_name      = HiddenField()
 
 
 class SearchThemeForm(Form):
